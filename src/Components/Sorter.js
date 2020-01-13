@@ -49,11 +49,26 @@ const expandArrayOps = (array, setArrayForState) => {
     }
   }
 }
+const defaultCmp = (a, b) => a - b
+// cmp should look like this
+// function compare(a, b) {
+//   if (a is less than b by some ordering criterion) {
+//     return -1;
+//   }
+//   if (a is greater than b by the ordering criterion) {
+//     return 1;
+//   }
+//   // a must be equal to b
+//   return 0;
+// }
 
-function Sorter({ sorter, initialArray, step }) {
+function Sorter({ sorter, initialArray, step, cmp = defaultCmp }) {
   const [isDone, setIsDone] = useState(false)
   const [array, setArray] = useState([...initialArray])
-  const arrayOps = expandArrayOps(array, setArray)
+  const arrayOps = { // contain everything that the generator can do to the arr
+    ...expandArrayOps(array, setArray),
+    cmp,
+  }
   const [sorterItr, _] = useState(sorter(array, arrayOps))
   useEffect(() => {
     // handle stepping forward in time
@@ -71,6 +86,7 @@ Sorter.propTypes = {
   sorter: PropTypes.func, // generator function
   initialArray: PropTypes.array, // what are we sorting
   step: PropTypes.number, // when it changes, indicates we should step
+  cmp: PropTypes.func, // special comparator if needed
 }
 
 export default Sorter
