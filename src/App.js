@@ -18,8 +18,15 @@ function* bubble_sort(arr, { swap, cmp }) {
   } while (swapped)
 }
 
-const array = [1, 2, 3, 4, 5, 0]
-const cmp = (a, b) => a - b
+const array = []
+const size = 3;
+for (let i = size - 1; i >= 0; i--) {
+  for (let j = size - 1; j >= 0; j--) {
+    array.push([i, j])
+  }
+}
+
+const cmp = (a, b) => (a[0] - b[0]) + (a[1] - b[1]) * 10
 
 function App() {
   const [step, setStep] = useState(0)

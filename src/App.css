@@ -32,7 +32,17 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+div {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+div p {
+  flex: 1 1 33%;
 }
