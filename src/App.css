@@ -41,8 +41,10 @@
 div {
   display: flex;
   flex-wrap: wrap;
+  width: 255px;
 }
 
 div p {
-  flex: 1 1 33%;
+  margin: 0;
+  display: flex;
 }

@@ -18,15 +18,23 @@ function* bubble_sort(arr, { swap, cmp }) {
   } while (swapped)
 }
 
+const makeTile = (x, y, w, h) => ({
+  x,
+  y,
+  src: `/blob/${x}-${y}.png`,
+  w,
+  h,
+})
+
 const array = []
 const size = 3;
 for (let i = size - 1; i >= 0; i--) {
   for (let j = size - 1; j >= 0; j--) {
-    array.push([i, j])
+    array.push(makeTile(i, j, 85, 85))
   }
 }
 
-const cmp = (a, b) => (a[0] - b[0]) + (a[1] - b[1]) * 10
+const cmp = (a, b) => (a.x - b.x) + (a.y - b.y) * size
 
 function App() {
   const [step, setStep] = useState(0)

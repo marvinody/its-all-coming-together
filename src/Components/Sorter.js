@@ -79,7 +79,14 @@ function Sorter({ sorter, initialArray, step, cmp = defaultCmp }) {
     setIsDone(result.done)
   }, [step, isDone, sorterItr])
 
-  return <div>{array.map(n => <p>{n}</p>)}</div>
+  return (
+    <div>{array.map(tile => (
+      <p key={tile.src}>
+        <img src={tile.src} width={tile.w} height={tile.h}></img>
+      </p>
+    ))}
+    </div>
+  )
 }
 
 Sorter.propTypes = {
