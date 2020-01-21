@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import Sorter from './Components/Sorter'
+import useInterval from './useInterval';
 function* bubble_sort(arr, { swap, cmp }) {
   const n = arr.length;
   let swapped = false;
@@ -38,13 +38,39 @@ const cmp = (a, b) => (a.x - b.x) + (a.y - b.y) * size
 
 function App() {
   const [step, setStep] = useState(0)
+  const [numSortsWorking, setNumSortsWorking] = useState(0)
+  const doneCB = () => {
+    if (numSortsWorking > 0) {
+      setNumSortsWorking(numSortsWorking - 1)
+    }
+  }
+  useInterval(() => {
+    setStep(step + 1)
+    console.log({ step })
+  }, numSortsWorking > 0 ? 100 : null)
+
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={() => setStep(step + 1)}>
-          Step
+        <button onClick={() => {
+          setNumSortsWorking(1)
+        }}>
+          Play
         </button>
-        <Sorter sorter={bubble_sort} initialArray={array} step={step} cmp={cmp}></Sorter>
+        <button onClick={() => {
+          // if we stop, then nothing is working anymore!
+          setNumSortsWorking(0)
+        }}>
+          Pause
+        </button>
+        <Sorter
+          sorter={bubble_sort}
+          initialArray={array}
+          step={step}
+          cmp={cmp}
+          weDone={doneCB}
+        >
+        </Sorter>
       </header>
     </div >
   );

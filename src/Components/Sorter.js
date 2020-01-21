@@ -62,7 +62,7 @@ const defaultCmp = (a, b) => a - b
 //   return 0;
 // }
 
-function Sorter({ sorter, initialArray, step, cmp = defaultCmp }) {
+function Sorter({ sorter, initialArray, step, cmp = defaultCmp, weDone }) {
   const [isDone, setIsDone] = useState(false)
   const [array, setArray] = useState([...initialArray])
   const arrayOps = { // contain everything that the generator can do to the arr
@@ -78,6 +78,12 @@ function Sorter({ sorter, initialArray, step, cmp = defaultCmp }) {
     // we done yet?
     setIsDone(result.done)
   }, [step, isDone, sorterItr])
+
+  useEffect(() => {
+    if (isDone) {
+      weDone()
+    }
+  }, [isDone, weDone])
 
   return (
     <div>{array.map(tile => (
