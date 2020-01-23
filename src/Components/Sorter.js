@@ -87,11 +87,16 @@ function Sorter({ sorter, initialArray, step, cmp = defaultCmp, weDone }) {
 
   return (
     <div>{array.map(tile => (
-      <p key={tile.src}>
-        <img src={tile.src} width={tile.w} height={tile.h}></img>
-      </p>
-    ))}
-    </div>
+      <div key={tile.id} style={{
+        backgroundImage: `url(${tile.src})`,
+        width: tile.w,
+        height: tile.h,
+        backgroundPositionX: -1 * tile.x,
+        backgroundPositionY: -1 * tile.y,
+      }}></div>
+    ))
+    }
+    </div >
   )
 }
 

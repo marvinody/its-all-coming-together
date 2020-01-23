@@ -41,7 +41,7 @@
 div {
   display: flex;
   flex-wrap: wrap;
-  width: 255px;
+  width: 256px;
 }
 
 div p {
