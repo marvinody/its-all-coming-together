@@ -1,35 +1,10 @@
 import React, { useState } from 'react';
 import './App.css';
 import Sorter from './Components/Sorter'
-import useInterval from './useInterval';
+import { shuffle, tileify, useInterval } from './util';
 import bubble_sort from './sorts/bubble_sort'
+import insertion_sort from './sorts/insertion_sort';
 
-const makeTile = ({ x, y, w, h, src, id }) => ({
-  x,
-  y,
-  src,
-  w,
-  h,
-  id
-})
-
-const tileify = ({ width, height, tileHeight, tileWidth, src }) => {
-  const tiles = []
-  let count = 0;
-  for (let y = 0; y < height; y += tileHeight) {
-    for (let x = 0; x < width; x += tileWidth) {
-      tiles.push(makeTile({
-        x,
-        y,
-        src,
-        w: tileWidth,
-        h: tileHeight,
-        id: count++,
-      }))
-    }
-  }
-  return tiles
-}
 
 // const tiles = tileify({
 //   width: 480,
@@ -50,24 +25,6 @@ const tiles = tileify(imageData)
 
 console.log(tiles)
 
-function shuffle(array) {
-  var currentIndex = array.length, temporaryValue, randomIndex;
-
-  // While there remain elements to shuffle...
-  while (0 !== currentIndex) {
-
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1;
-
-    // And swap it with the current element.
-    temporaryValue = array[currentIndex];
-    array[currentIndex] = array[randomIndex];
-    array[randomIndex] = temporaryValue;
-  }
-
-  return array;
-}
 shuffle(tiles)
 
 const cmp = (a, b) => (a.x - b.x) + (a.y - b.y) * 100000
@@ -101,6 +58,16 @@ function App() {
         </button>
         <Sorter
           sorter={bubble_sort}
+          initialArray={tiles}
+          step={step}
+          cmp={cmp}
+          weDone={doneCB}
+          numHorizTiles={imageData.width / imageData.tileWidth}
+        >
+        </Sorter>
+        <hr></hr>
+        <Sorter
+          sorter={insertion_sort}
           initialArray={tiles}
           step={step}
           cmp={cmp}
