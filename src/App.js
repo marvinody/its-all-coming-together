@@ -38,14 +38,15 @@ const tileify = ({ width, height, tileHeight, tileWidth, src }) => {
 //   tileHeight: 12,
 //   src: '/kronk_still.png'
 // })
-
-const tiles = tileify({
+const imageData = {
   width: 256,
   height: 256,
   tileWidth: 64,
   tileHeight: 64,
   src: '/blob_wat.png'
-})
+}
+
+const tiles = tileify(imageData)
 
 console.log(tiles)
 
@@ -104,6 +105,7 @@ function App() {
           step={step}
           cmp={cmp}
           weDone={doneCB}
+          numHorizTiles={imageData.width / imageData.tileWidth}
         >
         </Sorter>
       </header>

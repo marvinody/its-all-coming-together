@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
+import chunk from 'lodash/chunk'
+
 
 // get() {
 //   return this.state.values;
@@ -62,7 +64,7 @@ const defaultCmp = (a, b) => a - b
 //   return 0;
 // }
 
-function Sorter({ sorter, initialArray, step, cmp = defaultCmp, weDone }) {
+function Sorter({ sorter, initialArray, step, cmp = defaultCmp, weDone, numHorizTiles }) {
   const [isDone, setIsDone] = useState(false)
   const [array, setArray] = useState([...initialArray])
   const arrayOps = { // contain everything that the generator can do to the arr
@@ -85,18 +87,26 @@ function Sorter({ sorter, initialArray, step, cmp = defaultCmp, weDone }) {
     }
   }, [isDone, weDone])
 
+  const grid = chunk(array, numHorizTiles)
+
   return (
-    <div>{array.map(tile => (
-      <div key={tile.id} style={{
-        backgroundImage: `url(${tile.src})`,
-        width: tile.w,
-        height: tile.h,
-        backgroundPositionX: -1 * tile.x,
-        backgroundPositionY: -1 * tile.y,
-      }}></div>
-    ))
-    }
-    </div >
+    <div className='grid'>
+      {grid.map(row => (
+        <div className='row'>
+          {row.map(tile => (
+            <div key={tile.id} style={{
+              backgroundImage: `url(${tile.src})`,
+              backgroundRepeat: 'no-repeat',
+              width: tile.w,
+              height: tile.h,
+              backgroundPositionX: -1 * tile.x,
+              backgroundPositionY: -1 * tile.y,
+              // flexBasis: `${1 / numHorizTiles * 100}%`,
+            }}></div>
+          ))}
+        </div>
+      ))}
+    </div>
   )
 }
 
