@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import './App.css';
 import Sorter from './Components/Sorter'
 import { shuffle, tileify, useInterval } from './util';
@@ -32,11 +32,15 @@ const cmp = (a, b) => (a.x - b.x) + (a.y - b.y) * 100000
 function App() {
   const [step, setStep] = useState(0)
   const [numSortsWorking, setNumSortsWorking] = useState(0)
-  const doneCB = () => {
-    if (numSortsWorking > 0) {
-      setNumSortsWorking(numSortsWorking - 1)
-    }
-  }
+  const doneCB = useCallback(
+    () => {
+      console.log(numSortsWorking)
+      if (numSortsWorking > 0) {
+        setNumSortsWorking(numSortsWorking - 1)
+      }
+    },
+    [numSortsWorking],
+  )
   useInterval(() => {
     setStep(step + 1)
     console.log({ step })
@@ -46,7 +50,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <button onClick={() => {
-          setNumSortsWorking(1)
+          setNumSortsWorking(2)
         }}>
           Play
         </button>

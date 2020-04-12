@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState, useCallback } from "react"
 import PropTypes from "prop-types"
 import chunk from 'lodash/chunk'
 import { shuffle, tileify, useInterval } from '../util';
@@ -92,11 +92,14 @@ function Sorter({ sorter, initialArray, step, cmp = defaultCmp, weDone, numHoriz
     setIsDone(result.done)
   }, [step, isDone, sorterItr])
 
-  useEffect(() => {
-    if (isDone) {
-      weDone()
-    }
-  }, [isDone, weDone])
+  useEffect(useCallback(
+    () => {
+      if (isDone) {
+        weDone()
+      }
+    },
+    [isDone, weDone],
+  ), [isDone])
 
   const grid = chunk(array, numHorizTiles)
 
