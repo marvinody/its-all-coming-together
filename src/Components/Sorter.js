@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import PropTypes from "prop-types"
 import chunk from 'lodash/chunk'
+import { shuffle, tileify, useInterval } from '../util';
 
 
 // get() {
@@ -71,7 +72,17 @@ function Sorter({ sorter, initialArray, step, cmp = defaultCmp, weDone, numHoriz
     ...expandArrayOps(array, setArray),
     cmp,
   }
-  const [sorterItr, _] = useState(sorter(array, arrayOps))
+  const [sorterItr, setSorterItr] = useState(sorter(array, arrayOps))
+  const shufflePics = () => {
+    const copyArray = [...array]
+    shuffle(copyArray)
+    setArray(copyArray)
+    setSorterItr(sorter(copyArray, {
+      ...expandArrayOps(copyArray, setArray),
+      cmp
+    }))
+  }
+
   useEffect(() => {
     // handle stepping forward in time
     if (isDone || step === 0) return
@@ -90,22 +101,25 @@ function Sorter({ sorter, initialArray, step, cmp = defaultCmp, weDone, numHoriz
   const grid = chunk(array, numHorizTiles)
 
   return (
-    <div className='grid'>
-      {grid.map(row => (
-        <div className='row'>
-          {row.map(tile => (
-            <div key={tile.id} style={{
-              backgroundImage: `url(${tile.src})`,
-              backgroundRepeat: 'no-repeat',
-              width: tile.w,
-              height: tile.h,
-              backgroundPositionX: -1 * tile.x,
-              backgroundPositionY: -1 * tile.y,
-              // flexBasis: `${1 / numHorizTiles * 100}%`,
-            }}></div>
-          ))}
-        </div>
-      ))}
+    <div>
+      <button onClick={shufflePics}>Shuffle</button>
+      <div className='grid'>
+        {grid.map(row => (
+          <div className='row'>
+            {row.map(tile => (
+              <div key={tile.id} style={{
+                backgroundImage: `url(${tile.src})`,
+                backgroundRepeat: 'no-repeat',
+                width: tile.w,
+                height: tile.h,
+                backgroundPositionX: -1 * tile.x,
+                backgroundPositionY: -1 * tile.y,
+                // flexBasis: `${1 / numHorizTiles * 100}%`,
+              }}></div>
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
