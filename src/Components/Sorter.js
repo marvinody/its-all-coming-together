@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react"
 import PropTypes from "prop-types"
 import chunk from 'lodash/chunk'
-import { shuffle, tileify, useInterval } from '../util';
+import { shuffle } from '../util';
 
 
 // get() {
@@ -92,6 +92,7 @@ function Sorter({ sorter, initialArray, step, cmp = defaultCmp, weDone, numHoriz
     setIsDone(result.done)
   }, [step, isDone, sorterItr])
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(useCallback(
     () => {
       if (isDone) {
